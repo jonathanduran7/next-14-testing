@@ -2,6 +2,9 @@
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import List from "./components/List";
+import ClearButton from "./components/ClearButton";
+import EmptyMessage from "./components/EmptyMessage";
 
 const schema = Yup.object().shape({
   task: Yup.string().min(10, "Minimo 10 caracteres").required("No puede quedar vacio"),
@@ -40,18 +43,12 @@ export default function Taks() {
       </div>
 
       <div className="w-2/4 m-auto flex flex-col gap-5 mt-5">
-        {list.map((task, index) => (
-          <div key={index} className="border-2 p-5 rounded">
-            <span>{task}</span>
-          </div>
-        )
-        )}
-        {list.length > 0 && <button onClick={() => setList([])} className="bg-red-400 w-[110px] rounded h-[40px] m-auto">Clear</button>}
+        <List tasks={list} />
+        {list.length > 0 && <ClearButton resetList={() => setList([])} />}
       </div>
 
       {
-        !list.length && <div className="text-center mt-5">No hay tareas</div>
-      }
+        !list.length && <EmptyMessage message="No hay tareas" />}
     </div>
   )
 }
